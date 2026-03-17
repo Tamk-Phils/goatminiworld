@@ -39,7 +39,7 @@ export function Navbar() {
           <div className="w-12 h-12 flex items-center justify-center group-hover:scale-110 transition-transform">
             <img src={logo} alt="MiniGoat Logo" className="w-full h-full object-contain" />
           </div>
-          <span className="font-bold text-xl tracking-tight text-white">MINIGOAT WORLD</span>
+          <span className="font-bold text-lg sm:text-xl tracking-tight text-white">MINIGOAT WORLD</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -113,7 +113,11 @@ export function Navbar() {
             </Link>
           ))}
           {!user && (
-            <Link to="/auth" className="btn-primary justify-center mt-2">
+            <Link 
+              to="/auth" 
+              onClick={() => setIsOpen(false)}
+              className="btn-primary justify-center mt-2"
+            >
               Contact Us
             </Link>
           )}
