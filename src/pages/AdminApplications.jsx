@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
-import { FileText, CheckCircle2, XCircle, Clock, ExternalLink, ChevronDown, User, Mountain } from 'lucide-react'
+import { FileText, CheckCircle2, XCircle, Clock, ExternalLink, ChevronDown, User, Mountain, Mail } from 'lucide-react'
 import { Navigate, Link } from 'react-router-dom'
 
 export function AdminApplications() {
