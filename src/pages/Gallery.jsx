@@ -4,11 +4,11 @@ import { Mountain, Instagram, ArrowRight } from 'lucide-react'
 export function Gallery() {
   const images = [
     { url: 'https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&q=80', breed: 'Nigerian Dwarf', location: 'West Pastures' },
-    { url: 'https://images.unsplash.com/photo-1532509854226-a2d9d8e66305?auto=format&fit=crop&q=80', breed: 'Pygmy', location: 'Main Barn' },
-    { url: 'https://images.unsplash.com/photo-1596733430284-f7437764b1a9?auto=format&fit=crop&q=80', breed: 'Fainting', location: 'Sanctuary Creek' },
-    { url: 'https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&q=80', breed: 'Heritage Mix', location: 'Eco-Orchard' },
-    { url: 'https://images.unsplash.com/photo-1484557918186-75c17945ade0?auto=format&fit=crop&q=80', breed: 'Miniature Nubian', location: 'Morning Meadows' },
-    { url: 'https://images.unsplash.com/photo-1518491858826-6800f5fb95c7?auto=format&fit=crop&q=80', breed: 'Angora', location: 'Fiber Fields' },
+    { url: 'https://images.unsplash.com/photo-1761945729356-34eb5f7c9254?auto=format&fit=crop&q=80&w=1000', breed: 'Pygmy', location: 'Main Barn' },
+    { url: 'https://images.unsplash.com/photo-1642776185817-16c1b2419465?auto=format&fit=crop&q=80&w=1000', breed: 'Fainting (Myotonic)', location: 'Sanctuary Creek' },
+    { url: 'https://images.unsplash.com/photo-1741456868875-30574ef99e55?auto=format&fit=crop&q=80&w=1000', breed: 'Heritage Herd', location: 'Eco-Orchard' },
+    { url: 'https://images.unsplash.com/photo-1544253185-180a5624775d?auto=format&fit=crop&q=80', breed: 'Miniature Alpine', location: 'Morning Meadows' },
+    { url: 'https://images.unsplash.com/photo-1484557918186-75c17945ade0?auto=format&fit=crop&q=80', breed: 'Heritage Breed', location: 'Fiber Fields' },
   ]
 
   return (
