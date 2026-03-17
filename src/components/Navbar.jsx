@@ -81,7 +81,7 @@ export function Navbar() {
               </button>
             </div>
           ) : (
-            <Link to="/auth" className="hidden md:block btn-primary py-2 px-6 text-sm">
+            <Link to="/auth" className="hidden md:flex btn-primary py-2 px-6 text-sm">
               Contact Us <ArrowSmallRight />
             </Link>
           )}
