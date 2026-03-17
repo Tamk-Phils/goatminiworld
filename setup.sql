@@ -32,9 +32,7 @@ CREATE TABLE IF NOT EXISTS public.adoption_requests (
   goat_id UUID REFERENCES public.goats(id) ON DELETE SET NULL,
   guest_name TEXT,
   guest_email TEXT,
-  guest_phone TEXT,
   experience TEXT,
-  environment TEXT, -- Legacy, consider removing if UI doesn't use it
   motivation TEXT,
   message TEXT,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
