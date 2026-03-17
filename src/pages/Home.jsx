@@ -335,31 +335,31 @@ export function Home() {
                 text: "The support from MiniGoat World has been life-changing for our small family farm. Their heritage expertise is unmatched.",
                 author: "Sarah Jenkins",
                 role: "Member since 2021",
-                img: "/src/assets/community/portrait_1_sarah_1773737408235.png"
+                img: "/community/portrait_1_sarah_1773737408235.png"
               },
               {
                 text: "We adopted two Nigerian Dwarfs and were blown away by the health and temperament of the animals. Truly a premium experience.",
                 author: "Dr. Marcus Chen",
                 role: "Vet & User",
-                img: "/src/assets/community/portrait_2_marcus_1773737427020.png"
+                img: "/community/portrait_2_marcus_1773737427020.png"
               },
               {
                 text: "MiniGoat World isn't just a platform; it's a movement for sustainable agricultural preservation. Proud to be part of the herd.",
                 author: "Emma Thorne",
                 role: "Heritage Advocate",
-                img: "/src/assets/community/portrait_3_emma_1773737444810.png"
+                img: "/community/portrait_3_emma_1773737444810.png"
               },
               {
                 text: "The level of care and detail in their breeding program is visible in every animal. A gold standard for heritage farms.",
                 author: "David Miller",
                 role: "Heritage Farmer",
-                img: "/src/assets/community/portrait_4_david_1773737460799.png"
+                img: "/community/portrait_4_david_1773737460799.png"
               },
               {
                 text: "Finding MiniGoat World was a blessing. Their commitment to these majestic creatures is beautiful to witness.",
                 author: "Linda Thompson",
                 role: "Sanctuary Member",
-                img: "/src/assets/community/portrait_5_linda_1773737475853.png"
+                img: "/community/portrait_5_linda_1773737475853.png"
               }
             ].map((t, i) => (
               <motion.div 

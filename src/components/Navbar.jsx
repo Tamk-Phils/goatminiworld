@@ -39,7 +39,7 @@ export function Navbar() {
           <div className="w-12 h-12 flex items-center justify-center group-hover:scale-110 transition-transform">
             <img src={logo} alt="MiniGoat Logo" className="w-full h-full object-contain" />
           </div>
-          <span className="font-bold text-xl tracking-tight hidden sm:block text-white">MINIGOAT WORLD</span>
+          <span className="font-bold text-xl tracking-tight text-white">MINIGOAT WORLD</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -81,7 +81,7 @@ export function Navbar() {
               </button>
             </div>
           ) : (
-            <Link to="/auth" className="hidden sm:block btn-primary py-2 px-6 text-sm">
+            <Link to="/auth" className="hidden md:block btn-primary py-2 px-6 text-sm">
               Contact Us <ArrowSmallRight />
             </Link>
           )}
