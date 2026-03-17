@@ -82,7 +82,7 @@ export function Navbar() {
             </div>
           ) : (
             <Link to="/auth" className="hidden md:flex btn-primary py-2 px-6 text-sm">
-              Contact Us <ArrowSmallRight />
+              Sign In <ArrowSmallRight />
             </Link>
           )}
 
@@ -118,7 +118,7 @@ export function Navbar() {
               onClick={() => setIsOpen(false)}
               className="btn-primary justify-center mt-2"
             >
-              Contact Us
+              Sign In
             </Link>
           )}
         </motion.div>
