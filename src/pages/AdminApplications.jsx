@@ -19,7 +19,7 @@ export function AdminApplications() {
     try {
       const { data, error } = await supabase
         .from('adoption_requests')
-        .select('*, users(*), goats(*)')
+        .select('*, goats(*)') // user profile is often null for guests
         .order('created_at', { ascending: false })
       
       if (error) throw error
@@ -47,17 +47,19 @@ export function AdminApplications() {
       
       if (error) throw error
 
-      // Create notification for user
-      const notificationMessage = status === 'approved' 
-        ? `Your adoption application status has been updated to: APPROVED! Please contact support via the internal chat or email us at support@minigoatworld.com to proceed with your heritage sponsorship and payment.`
-        : `Your adoption application status has been updated to: ${status.toUpperCase()}`;
+      // Create notification for user ONLY IF REGISTERED
+      if (userId) {
+        const notificationMessage = status === 'approved' 
+          ? `Your adoption application status has been updated to: APPROVED! Please contact support via the internal chat or email us at support@minigoatworld.com to proceed with your heritage sponsorship and payment.`
+          : `Your adoption application status has been updated to: ${status.toUpperCase()}`;
 
-      await supabase.from('notifications').insert([
-        {
-          user_id: userId,
-          message: notificationMessage,
-        }
-      ])
+        await supabase.from('notifications').insert([
+          {
+            user_id: userId,
+            message: notificationMessage,
+          }
+        ])
+      }
     } catch (err) {
       setApplications(previousApps); // Rollback
       alert(err.message);
@@ -73,7 +75,7 @@ export function AdminApplications() {
           <h1 className="text-4xl font-bold text-primary mb-2 tracking-tight flex items-center gap-4">
             <FileText size={32} className="text-accent-dark" /> Adoption Reviews
           </h1>
-          <p className="text-primary/60">Process and evaluate user adoption sponsorship requests.</p>
+          <p className="text-primary/60">Process and evaluate user and guest adoption sponsorship requests.</p>
         </header>
 
         {loading ? (
@@ -103,7 +105,9 @@ export function AdminApplications() {
                       {new Date(app.created_at).toLocaleDateString()}
                     </span>
                   </div>
-                  <h3 className="font-bold text-lg text-primary mb-1">{app.users?.full_name || 'Anonymous User'}</h3>
+                  <h3 className="font-bold text-lg text-primary mb-1 truncate">
+                    {app.guest_name || 'Anonymous User'}
+                  </h3>
                   <p className="text-xs text-primary/40 flex items-center gap-1">
                     Applying for <span className="text-primary font-bold">{app.goats?.name}</span>
                   </p>
@@ -129,13 +133,16 @@ export function AdminApplications() {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
                       <div className="flex items-center gap-6">
                         <div className="w-20 h-20 rounded-full bg-accent/20 flex items-center justify-center text-primary-light text-3xl font-bold">
-                          {selectedApp.users?.full_name?.charAt(0) || 'U'}
+                          {(selectedApp.guest_name || 'U').charAt(0)}
                         </div>
                         <div>
-                          <h2 className="text-3xl font-bold text-primary tracking-tight">{selectedApp.users?.full_name || 'Anonymous User'}</h2>
+                          <h2 className="text-3xl font-bold text-primary tracking-tight">
+                            {selectedApp.guest_name}
+                            {selectedApp.user_id && <span className="ml-2 text-[10px] bg-primary/5 text-primary/40 px-2 py-0.5 rounded-full uppercase tracking-tighter">Registered</span>}
+                          </h2>
                           <div className="flex flex-col sm:flex-row sm:gap-4">
-                            <p className="text-primary/40 font-medium">{selectedApp.users?.email}</p>
-                            <p className="text-accent underline font-bold text-sm tracking-tight">{selectedApp.phone || "No phone provided"}</p>
+                            <p className="text-primary/40 font-medium">{selectedApp.guest_email}</p>
+                            <p className="text-accent underline font-bold text-sm tracking-tight">{selectedApp.guest_phone || "No phone provided"}</p>
                           </div>
                         </div>
                       </div>
@@ -163,15 +170,6 @@ export function AdminApplications() {
                     </div>
 
                     <div className="space-y-10 mb-12">
-                      <div className="space-y-4">
-                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary/30 flex items-center gap-2">
-                          <Mountain size={14} /> Living Environment
-                        </h4>
-                        <div className="p-8 bg-primary/5 rounded-[2rem] text-primary/70 leading-relaxed text-sm">
-                          {selectedApp.environment || "No environment description provided."}
-                        </div>
-                      </div>
-
                       <div className="space-y-4">
                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary/30 flex items-center gap-2">
                           <Mountain size={14} /> Motivation & Goals

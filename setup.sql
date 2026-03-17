@@ -28,11 +28,13 @@ CREATE TABLE IF NOT EXISTS public.goats (
 -- 3. Adoption Requests
 CREATE TABLE IF NOT EXISTS public.adoption_requests (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE, -- Optional for guest submissions
   goat_id UUID REFERENCES public.goats(id) ON DELETE SET NULL,
-  phone TEXT,
+  guest_name TEXT,
+  guest_email TEXT,
+  guest_phone TEXT,
   experience TEXT,
-  environment TEXT,
+  environment TEXT, -- Legacy, consider removing if UI doesn't use it
   motivation TEXT,
   message TEXT,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
@@ -100,7 +102,7 @@ DROP POLICY IF EXISTS "Users can view their own adoption requests" ON public.ado
 CREATE POLICY "Users can view their own adoption requests" ON public.adoption_requests FOR SELECT USING (auth.uid() = user_id);
 
 DROP POLICY IF EXISTS "Users can insert their own adoption requests" ON public.adoption_requests;
-CREATE POLICY "Users can insert their own adoption requests" ON public.adoption_requests FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Anyone can insert adoption requests" ON public.adoption_requests FOR INSERT WITH CHECK (true);
 
 -- Message Policies
 DROP POLICY IF EXISTS "Users can view their own messages" ON public.messages;
