@@ -45,8 +45,6 @@ export function Footer() {
           <h4 className="font-bold mb-6 uppercase tracking-widest text-sm text-accent">Contact</h4>
           <ul className="space-y-4 text-white/60">
             <li className="flex items-center gap-3"><Mail size={18} className="text-accent"/> support@minigoatworld.com</li>
-            <li className="flex items-center gap-3"><Phone size={18} className="text-accent"/> +1 (555) GOAT-HERD</li>
-            <li className="flex items-center gap-3"><MapPin size={18} className="text-accent"/> 123 Sanctuary Way, Green Valley</li>
           </ul>
         </div>
 

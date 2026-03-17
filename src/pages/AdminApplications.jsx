@@ -130,7 +130,7 @@ export function AdminApplications() {
                     exit={{ opacity: 0, y: -10 }}
                     className="bg-white rounded-[3rem] p-10 sm:p-16 border border-primary/5 shadow-sm sticky top-32"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
                       <div className="flex items-center gap-6">
                         <div className="w-20 h-20 rounded-full bg-accent/20 flex items-center justify-center text-primary-light text-3xl font-bold">
                           {(selectedApp.guest_name || 'U').charAt(0)}
@@ -141,7 +141,12 @@ export function AdminApplications() {
                             {selectedApp.user_id && <span className="ml-2 text-[10px] bg-primary/5 text-primary/40 px-2 py-0.5 rounded-full uppercase tracking-tighter">Registered</span>}
                           </h2>
                           <div className="flex flex-col sm:flex-row sm:gap-4">
-                            <p className="text-primary/40 font-medium">{selectedApp.guest_email}</p>
+                            <a 
+                              href={`mailto:${selectedApp.guest_email}`} 
+                              className="text-primary/40 font-medium hover:text-accent transition-colors flex items-center gap-1"
+                            >
+                              <Mail size={14} /> {selectedApp.guest_email}
+                            </a>
                             <p className="text-accent underline font-bold text-sm tracking-tight">{selectedApp.guest_phone || "No phone provided"}</p>
                           </div>
                         </div>
@@ -153,6 +158,18 @@ export function AdminApplications() {
                         View {selectedApp.goats?.name} <ExternalLink size={14} />
                       </Link>
                     </div>
+
+                    {!selectedApp.user_id && (
+                      <div className="mb-10 p-6 bg-amber-50 rounded-3xl border border-amber-200 flex items-start gap-4">
+                        <Mail className="text-amber-600 shrink-0 mt-1" size={20} />
+                        <div>
+                          <p className="text-sm font-bold text-amber-800 mb-1">Guest Applicant Detected</p>
+                          <p className="text-xs text-amber-700 leading-relaxed">
+                            This applicant is not signed in. They will <strong>not</strong> receive in-app notifications. Please reach out to them directly via email at <a href={`mailto:${selectedApp.guest_email}`} className="underline font-bold">{selectedApp.guest_email}</a> to provide status updates.
+                          </p>
+                        </div>
+                      </div>
+                    )}
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 mb-12 py-10 border-y border-primary/5">
                       <div className="space-y-2">
