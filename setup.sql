@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS public.adoption_requests (
   goat_id UUID REFERENCES public.goats(id) ON DELETE SET NULL,
   guest_name TEXT,
   guest_email TEXT,
+  guest_phone TEXT,
   experience TEXT,
   motivation TEXT,
   message TEXT,

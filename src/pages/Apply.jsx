@@ -18,6 +18,7 @@ export function Apply() {
   const [formData, setFormData] = useState({
     name: user?.user_metadata?.full_name || '',
     email: user?.email || '',
+    phone: '',
     experience: 'beginner',
     motivation: '',
     message: ''
@@ -53,6 +54,7 @@ export function Apply() {
         goat_id: id,
         guest_name: formData.name,
         guest_email: formData.email,
+        guest_phone: formData.phone,
         experience: formData.experience,
         motivation: formData.motivation,
         message: formData.message,
@@ -172,7 +174,21 @@ export function Apply() {
                       />
                     </div>
                   </div>
-                  <div className="space-y-2 sm:col-span-2">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary-light opacity-60 ml-1">Phone Number</label>
+                    <div className="relative">
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/20" size={18} />
+                      <input 
+                        type="tel"
+                        required
+                        placeholder="+1 (555) 000-0000"
+                        className="w-full bg-white border border-primary/10 rounded-2xl p-4 pl-12 focus:outline-none focus:border-accent shadow-sm transition-all"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-primary-light opacity-60 ml-1">Experience Level</label>
                     <select 
                       className="w-full bg-white border border-primary/10 rounded-2xl p-4 focus:outline-none focus:border-accent shadow-sm transition-all appearance-none font-medium"

@@ -142,6 +142,7 @@ export function AdminApplications() {
                           </h2>
                           <div className="flex flex-col sm:flex-row sm:gap-4">
                             <p className="text-primary/40 font-medium">{selectedApp.guest_email}</p>
+                            <p className="text-accent underline font-bold text-sm tracking-tight">{selectedApp.guest_phone || "No phone provided"}</p>
                           </div>
                         </div>
                       </div>
