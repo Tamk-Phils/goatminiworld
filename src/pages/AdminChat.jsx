@@ -154,23 +154,31 @@ export function AdminChat() {
   if (!isAdmin) return <Navigate to="/" />
 
   return (
-    <div className="min-h-screen pt-32 pb-12 bg-surface flex flex-col">
-      <div className="max-w-7xl mx-auto w-full px-6 flex flex-col flex-1">
-        <header className="mb-12 flex items-center justify-between">
+    <div className="flex flex-col h-full">
+      <div className="flex flex-col flex-1 overflow-hidden">
+        <header className="mb-8 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-4">
-            <button onClick={() => navigate('/admin')} className="p-3 bg-white rounded-full border border-primary/5 text-primary/40 hover:text-primary transition-all">
+            {selectedUser && (
+              <button 
+                onClick={() => setSelectedUser(null)} 
+                className="lg:hidden p-3 bg-white rounded-full border border-primary/5 text-primary/40 hover:text-primary transition-all"
+              >
+                <ArrowLeft size={20} />
+              </button>
+            )}
+            <button onClick={() => navigate('/admin')} className={`p-3 bg-white rounded-full border border-primary/5 text-primary/40 hover:text-primary transition-all ${selectedUser ? 'hidden lg:flex' : ''}`}>
               <ArrowLeft size={20} />
             </button>
-            <h1 className="text-4xl font-bold text-primary tracking-tight">Chat Operations</h1>
+            <h1 className="text-2xl lg:text-4xl font-bold text-primary tracking-tight">Chat Operations</h1>
           </div>
           <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center text-accent shadow-lg shadow-primary/10">
             <Mountain size={28} />
           </div>
         </header>
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-12 h-[calc(100vh-320px)] min-h-[600px]">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-0 overflow-hidden pb-4">
           {/* Conversations List */}
-          <div className="lg:col-span-1 space-y-6 flex flex-col h-full overflow-hidden">
+          <div className={`lg:col-span-1 space-y-6 flex flex-col h-full overflow-hidden ${selectedUser ? 'hidden lg:flex' : 'flex'}`}>
             <div className="relative group flex-shrink-0">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/20 group-focus-within:text-accent transition-colors" size={18} />
               <input 
@@ -212,7 +220,7 @@ export function AdminChat() {
           </div>
 
           {/* Chat Window */}
-          <div className="lg:col-span-2 flex flex-col bg-white rounded-[3rem] border border-primary/5 shadow-xl shadow-primary/5 overflow-hidden h-full">
+          <div className={`lg:col-span-2 flex flex-col bg-white rounded-3xl lg:rounded-[3rem] border border-primary/5 shadow-xl shadow-primary/5 overflow-hidden h-full ${!selectedUser ? 'hidden lg:flex' : 'flex'}`}>
             <AnimatePresence mode="wait">
               {selectedUser ? (
                 <motion.div 
@@ -222,21 +230,21 @@ export function AdminChat() {
                   exit={{ opacity: 0 }}
                   className="flex flex-col h-full"
                 >
-                  <header className="p-8 border-b border-primary/5 flex items-center justify-between bg-primary text-white flex-shrink-0">
+                  <header className="p-4 lg:p-8 border-b border-primary/5 flex items-center justify-between bg-primary text-white flex-shrink-0">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-white text-primary flex items-center justify-center font-bold flex-shrink-0">
+                      <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white text-primary flex items-center justify-center font-bold flex-shrink-0">
                         {selectedUser.full_name?.charAt(0) || 'U'}
                       </div>
-                      <div>
-                        <h3 className="font-bold text-lg leading-none mb-1">{selectedUser.full_name || 'Anonymous User'}</h3>
+                      <div className="overflow-hidden">
+                        <h3 className="font-bold text-base lg:text-lg leading-none mb-1 truncate">{selectedUser.full_name || 'Anonymous User'}</h3>
                         <div className="flex items-center gap-2 text-white/40">
-                          <Mail size={12} />
-                          <p className="text-[10px] font-bold uppercase tracking-[0.2em]">{selectedUser.email}</p>
+                          <Mail size={12} className="flex-shrink-0" />
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] truncate">{selectedUser.email}</p>
                         </div>
                       </div>
                     </div>
-                    <Link to="/admin/users" className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
-                      <Users size={20} />
+                    <Link to="/admin/users" className="p-2 lg:p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+                      <Users size={18} />
                     </Link>
                   </header>
 
@@ -266,16 +274,16 @@ export function AdminChat() {
                       <input 
                         type="text" 
                         placeholder="Type response..."
-                        className="flex-1 bg-white border border-primary/10 rounded-2xl py-4 px-6 text-primary focus:outline-none focus:border-accent shadow-sm"
+                        className="flex-1 bg-white border border-primary/10 rounded-xl lg:rounded-2xl py-3 lg:py-4 px-4 lg:px-6 text-primary text-sm focus:outline-none focus:border-accent shadow-sm"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                       />
                       <button 
                         type="submit"
                         disabled={!input.trim()}
-                        className="w-14 h-14 bg-accent text-primary rounded-2xl flex-shrink-0 flex items-center justify-center hover:scale-105 transition-all shadow-lg shadow-accent/20 disabled:opacity-50"
+                        className="w-12 h-12 lg:w-14 lg:h-14 bg-accent text-primary rounded-xl lg:rounded-2xl flex-shrink-0 flex items-center justify-center hover:scale-105 transition-all shadow-lg shadow-accent/20 disabled:opacity-50"
                       >
-                        <Send size={24} />
+                        <Send size={20} className="lg:size-24" />
                       </button>
                     </div>
                   </form>
