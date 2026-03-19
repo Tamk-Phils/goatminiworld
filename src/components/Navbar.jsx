@@ -27,7 +27,6 @@ export function Navbar() {
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
     { name: 'Our Herd', path: '/browse' },
-    { name: 'Gallery', path: '/gallery' },
     { name: 'Sustainability', path: '/sustainability' },
     { name: 'FAQ', path: '/faq' },
   ]
@@ -81,8 +80,8 @@ export function Navbar() {
               </button>
             </div>
           ) : (
-            <Link to="/auth" className="hidden md:flex btn-primary py-2 px-6 text-sm">
-              Sign In <ArrowSmallRight />
+            <Link to="/browse" className="btn-primary py-2 px-6 text-sm">
+              Our Herd <ArrowSmallRight />
             </Link>
           )}
 
@@ -116,9 +115,9 @@ export function Navbar() {
             <Link 
               to="/auth" 
               onClick={() => setIsOpen(false)}
-              className="btn-primary justify-center mt-2"
+              className="btn-primary justify-center mt-2 group"
             >
-              Sign In
+              Sign In <ArrowSmallRight />
             </Link>
           )}
         </motion.div>

@@ -16,7 +16,6 @@ import { AdminLayout } from './components/AdminLayout'
 import { About } from './pages/About'
 import { Sustainability } from './pages/Sustainability'
 import { FAQ } from './pages/FAQ'
-import { Gallery } from './pages/Gallery'
 import { AuthProvider } from './context/AuthContext'
 import { Footer } from './components/Footer'
 import { ProtectedRoute } from './components/ProtectedRoute'
@@ -67,7 +66,6 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/sustainability" element={<Sustainability />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route path="/gallery" element={<Gallery />} />
           </Routes>
         </main>
         {!isAdminPath && <Footer />}
