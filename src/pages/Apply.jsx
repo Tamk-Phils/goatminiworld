@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { ArrowLeft, CheckCircle2, Send, Mountain, User, Mail, Phone } from 'lucide-react'
-import { sendAdoptionEmail } from '../lib/email'
 
 export function Apply() {
   const { id } = useParams()
@@ -72,24 +71,6 @@ export function Apply() {
         .insert([submissionData])
 
       if (error) throw error
-
-      // TRIGGER EMAIL TO ADMIN via EmailJS
-      try {
-        await sendAdoptionEmail({ 
-          type: 'new_submission',
-          email: formData.email, 
-          name: formData.name,
-          goatName: goat?.name,
-          details: {
-            phone: formData.phone,
-            experience: formData.experience,
-            motivation: formData.motivation
-          }
-        });
-      } catch (e) {
-        console.error('Email failed:', e);
-      }
-
       setSubmitted(true)
     } catch (err) {
       alert(err.message)

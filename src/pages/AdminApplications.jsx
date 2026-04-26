@@ -4,7 +4,6 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { FileText, CheckCircle2, XCircle, Clock, ExternalLink, ChevronDown, User, Mountain, Mail } from 'lucide-react'
 import { Navigate, Link } from 'react-router-dom'
-import { sendAdoptionEmail } from '../lib/email'
 
 export function AdminApplications() {
   const { isAdmin } = useAuth()
@@ -47,19 +46,6 @@ export function AdminApplications() {
         .eq('id', id)
       
       if (error) throw error
-
-      // TRIGGER EMAIL NOTIFICATION TO USER via EmailJS
-      try {
-        await sendAdoptionEmail({ 
-          type: 'status_update',
-          email: selectedApp.guest_email, 
-          name: selectedApp.guest_name,
-          status: status,
-          goatName: selectedApp.goats?.name
-        });
-      } catch (e) {
-        console.error('Email failed:', e);
-      }
 
       // Create notification for user ONLY IF REGISTERED
       if (userId) {
