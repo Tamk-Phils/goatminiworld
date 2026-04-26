@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { FileText, CheckCircle2, XCircle, Clock, ExternalLink, ChevronDown, User, Mountain, Mail } from 'lucide-react'
 import { Navigate, Link } from 'react-router-dom'
+import { emailService } from '../lib/emailService'
 
 export function AdminApplications() {
   const { isAdmin } = useAuth()
@@ -46,6 +47,18 @@ export function AdminApplications() {
         .eq('id', id)
       
       if (error) throw error
+
+      // TRIGGER EMAIL via Internal API (Attkisson Approach)
+      try {
+        await emailService.notifyStatusUpdate(
+          selectedApp.guest_name,
+          selectedApp.guest_email,
+          selectedApp.goats?.name,
+          status
+        );
+      } catch (e) {
+        console.error('Email failed:', e);
+      }
 
       // Create notification for user ONLY IF REGISTERED
       if (userId) {
