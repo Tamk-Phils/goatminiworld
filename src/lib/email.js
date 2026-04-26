@@ -1,25 +1,50 @@
 /**
- * Robust Email Utility using Formspree
- * This is the final, rock-solid solution that bypasses all SMTP and CORS restrictions.
+ * Premium Email Utility using Formspree
+ * Custom formatted for a beautiful, organized inbox experience.
  */
 export async function sendAdoptionEmail({ type, email, name, status, goatName, details = {} }) {
-  const FORMSPREE_URL = "https://formspree.io/f/xbdqerqr";
+  const FORMSPREE_URL = "https://formspree.io/f/mlgakrqj";
   
   const isSubmission = type === 'new_submission';
   
+  // Custom formatted message for a "Beautiful" look in the inbox
+  const customMessage = isSubmission 
+    ? `
+--------------------------------------------------
+🐐 NEW HERITAGE SPONSORSHIP REQUEST
+--------------------------------------------------
+Goat: ${goatName}
+Applicant: ${name}
+Email: ${email}
+Phone: ${details.phone || 'N/A'}
+Experience: ${details.experience || 'N/A'}
+
+MOTIVATION:
+"${details.motivation || 'N/A'}"
+--------------------------------------------------
+    `
+    : `
+--------------------------------------------------
+✨ APPLICATION STATUS UPDATE
+--------------------------------------------------
+Hello ${name},
+
+Your application for ${goatName} has been ${status?.toUpperCase()}.
+
+${status === 'approved' 
+  ? "Welcome to the heritage preservation family! Check your dashboard for next steps." 
+  : "Thank you for your interest. We encourage you to explore our other goats."}
+--------------------------------------------------
+    `;
+
   const payload = {
-    _subject: isSubmission ? `🚨 New Request: ${name} for ${goatName}` : `Update: Your request for ${goatName}`,
-    type: type,
+    _subject: isSubmission ? `🚨 New Request: ${name}` : `Update: ${goatName} Application`,
+    _template: "table", // Formspree will use a clean table layout
     name: name,
     email: email,
-    goat_name: goatName,
+    goat: goatName,
     status: status || 'pending',
-    phone: details.phone || 'N/A',
-    experience: details.experience || 'N/A',
-    motivation: details.motivation || 'N/A',
-    message: isSubmission 
-      ? `New application received for ${goatName}.` 
-      : `Your application for ${goatName} has been ${status?.toUpperCase()}.`
+    custom_formatted_message: customMessage,
   };
 
   try {
@@ -32,11 +57,10 @@ export async function sendAdoptionEmail({ type, email, name, status, goatName, d
       body: JSON.stringify(payload)
     });
 
-    if (!response.ok) throw new Error('Formspree request failed');
-    console.log('Email sent via Formspree successfully!');
+    if (!response.ok) throw new Error('Formspree failed');
     return true;
   } catch (error) {
-    console.error('Formspree failed:', error);
+    console.error('Email failed:', error);
     throw error;
   }
 }
