@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
@@ -9,6 +9,9 @@ exports.handler = async (event) => {
     const { type, email, name, status, goatName, details } = JSON.parse(event.body);
     
     // Decode password (Attkisson Approach)
+    if (!process.env.SMTP_PASS_B64) {
+      throw new Error('SMTP_PASS_B64 not found in environment');
+    }
     const smtpPass = Buffer.from(process.env.SMTP_PASS_B64, 'base64').toString();
 
     const transporter = nodemailer.createTransport({
@@ -35,25 +38,31 @@ exports.handler = async (event) => {
           <h1 style="color: #D4AF37; margin: 0; font-size: 24px; text-transform: uppercase;">MiniGoat World</h1>
         </div>
         <div style="padding: 40px;">
-          <h2 style="color: #2d3748;">${title}</h2>
-          <p style="color: #4a5568;">${mainText}</p>
-          <div style="background-color: #f7fafc; padding: 25px; border-radius: 8px; border-left: 4px solid #D4AF37;">
+          <h2 style="color: #2d3748; font-size: 20px;">${title}</h2>
+          <p style="color: #4a5568; line-height: 1.6;">${mainText}</p>
+          <div style="background-color: #f7fafc; padding: 25px; border-radius: 8px; border-left: 4px solid #D4AF37; margin: 20px 0;">
             ${isSubmission ? `
-              <p><strong>Applicant:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Motivation:</strong> ${details?.motivation || 'N/A'}</p>
+              <p style="margin: 5px 0;"><strong>Applicant:</strong> ${name}</p>
+              <p style="margin: 5px 0;"><strong>Email:</strong> ${email}</p>
+              <p style="margin: 15px 0 5px 0;"><strong>Motivation:</strong></p>
+              <p style="margin: 0; color: #718096; font-style: italic;">"${details?.motivation || 'N/A'}"</p>
             ` : `
-              <p>${isApproved ? "Welcome to the family!" : "Thank you for your interest."}</p>
+              <p style="margin: 0;">${isApproved 
+                ? "Welcome to the family! Please log in to your dashboard for next steps." 
+                : "Thank you for your interest. We encourage you to explore our other goats."}</p>
             `}
           </div>
+          <p style="color: #a0aec0; font-size: 12px; text-align: center; margin-top: 30px;">
+            &copy; 2024 MiniGoat World Heritage Sanctuary
+          </p>
         </div>
       </div>
     `;
 
-    // 1. Send to Admin
+    // 1. Send to Admin (Alert)
     if (isSubmission) {
       await transporter.sendMail({
-        from: '"MiniGoat World" <support@minigoatworld.com>',
+        from: '"MiniGoat Admin" <support@minigoatworld.com>',
         to: 'support@minigoatworld.com',
         replyTo: email,
         subject: `🚨 New Request: ${name}`,
@@ -61,7 +70,7 @@ exports.handler = async (event) => {
       });
     }
 
-    // 2. Send to User
+    // 2. Send to User (Confirmation)
     await transporter.sendMail({
       from: '"MiniGoat World" <support@minigoatworld.com>',
       to: email,
@@ -71,12 +80,14 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: 'Emails sent successfully' })
     };
   } catch (error) {
     console.error('Email error:', error);
     return {
       statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ error: error.message })
     };
   }
