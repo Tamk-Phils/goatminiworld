@@ -1,9 +1,14 @@
 import { motion } from 'framer-motion'
 import { Mountain, Users, Heart, Shield } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 
 export function About() {
   return (
     <div className="min-h-screen pt-32 pb-20 bg-surface">
+      <Helmet>
+        <title>About Us | Our Mission at MiniGoat World</title>
+        <meta name="description" content="Learn about our 20-year history of preserving heritage goat breeds. Our sanctuary is dedicated to the ethical care and genetic integrity of rare miniature goats." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-6">
         <header className="mb-20 text-center max-w-3xl mx-auto">
           <motion.div 

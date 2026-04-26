@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { Search, Filter, ArrowRight, Tag, Info } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 
 export function Browse() {
   const [goats, setGoats] = useState([])
@@ -50,6 +51,11 @@ export function Browse() {
 
   return (
     <div className="min-h-screen pt-32 pb-20 bg-surface">
+      <Helmet>
+        <title>Our Heritage Herd | Miniature Goats for Sale</title>
+        <meta name="description" content="Browse our available Nigerian Dwarf, Pygmy, and Fainting heritage goats. Find your perfect companion from our ethically raised herd." />
+        <meta name="keywords" content="adopt a goat, heritage goats, miniature goats, nigerian dwarf goats for sale, pygmy goats for sale" />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4 tracking-tight">Our Heritage Herd</h1>

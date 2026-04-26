@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus, HelpCircle, MessageSquare } from 'lucide-react'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState(0)
@@ -34,6 +35,10 @@ export function FAQ() {
 
   return (
     <div className="min-h-screen pt-32 pb-20 bg-surface">
+      <Helmet>
+        <title>FAQ | Miniature Goat Care & Adoption | MiniGoat World</title>
+        <meta name="description" content="Find answers to common questions about heritage goat breeds, adoption processes, care requirements, and sanctuary visits." />
+      </Helmet>
       <div className="max-w-4xl mx-auto px-6">
         <header className="mb-20 text-center">
           <HelpCircle size={48} className="text-accent-dark mx-auto mb-6" />

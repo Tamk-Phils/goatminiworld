@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Shield, Heart, MessageSquare, Info, X, Mountain, Ruler, Thermometer, Zap } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 
 export function Home() {
   const [selectedBreed, setSelectedBreed] = useState(null)
@@ -43,6 +44,11 @@ export function Home() {
   ]
   return (
     <div className="bg-primary min-h-screen text-white overflow-hidden">
+      <Helmet>
+        <title>MiniGoat World | Premium Heritage Breed Sanctuary</title>
+        <meta name="description" content="Discover the world of heritage miniature goats. We specialize in Nigerian Dwarf, Pygmy, and Fainting goats. Join our mission to preserve rare breeds." />
+        <meta name="keywords" content="miniature goats for sale, heritage breed sanctuary, pygmy goats, nigerian dwarf goats, fainting goats, rare goat breeds, sustainable farming" />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">
         <div className="absolute inset-0 z-0">

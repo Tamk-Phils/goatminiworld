@@ -1,9 +1,14 @@
 import { motion } from 'framer-motion'
 import { Leaf, Sun, Wind, Droplets, Mountain } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 
 export function Sustainability() {
   return (
     <div className="min-h-screen pt-32 pb-20 bg-surface">
+      <Helmet>
+        <title>Sustainability & Regenerative Farming | MiniGoat World</title>
+        <meta name="description" content="Explore our eco-friendly sanctuary practices. From rotational grazing to solar operations, we are committed to sustainable heritage goat farming." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-6">
         <header className="mb-20">
           <motion.div 

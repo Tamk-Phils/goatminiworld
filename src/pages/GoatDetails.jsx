@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { ArrowLeft, Tag, Calendar, DollarSign, MessageSquare, ShieldCheck, Heart } from 'lucide-react'
 
@@ -8,6 +8,8 @@ export function GoatDetails() {
   const { id } = useParams()
   const [goat, setGoat] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
     fetchGoat()
@@ -39,6 +41,8 @@ export function GoatDetails() {
     return images[breed] || images['Nigerian Dwarf']
   }
 
+  const goatImages = goat?.images?.length > 0 ? goat.images : [goat?.legacy_image_url || getBreedImage(goat?.breed)]
+
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center pt-24">
       <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
@@ -58,7 +62,6 @@ export function GoatDetails() {
         <Link to="/browse" className="inline-flex items-center gap-2 text-primary/60 hover:text-accent transition-colors mb-8 font-medium">
           <ArrowLeft size={20} /> Back to Catalog
         </Link>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Gallery */}
           <motion.div 
@@ -66,24 +69,59 @@ export function GoatDetails() {
             animate={{ opacity: 1, x: 0 }}
             className="space-y-6"
           >
-            <div className="aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-primary/10">
-              <img 
-                src={goat.images?.[0] || goat.legacy_image_url || getBreedImage(goat.breed)} 
-                alt={goat.name}
-                className="w-full h-full object-cover"
-              />
+            <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-primary/10 bg-primary/5">
+              <AnimatePresence mode="wait">
+                <motion.img 
+                  key={currentImageIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  src={goatImages[currentImageIndex]} 
+                  alt={goat.name}
+                  className="w-full h-full object-cover"
+                />
+              </AnimatePresence>
+              
+              {goatImages.length > 1 && (
+                <>
+                  <button 
+                    onClick={() => setCurrentImageIndex((prev) => (prev - 1 + goatImages.length) % goatImages.length)}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-white/40 transition-all border border-white/20"
+                  >
+                    <ArrowLeft size={24} />
+                  </button>
+                  <button 
+                    onClick={() => setCurrentImageIndex((prev) => (prev + 1) % goatImages.length)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-white/40 transition-all border border-white/20"
+                  >
+                    <div className="rotate-180"><ArrowLeft size={24} /></div>
+                  </button>
+                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                    {goatImages.map((_, i) => (
+                      <div 
+                        key={i} 
+                        className={`w-2 h-2 rounded-full transition-all ${i === currentImageIndex ? 'bg-white w-6' : 'bg-white/40'}`} 
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
             
-            {goat.images?.length > 1 && (
+            {goatImages.length > 1 && (
               <div className="grid grid-cols-4 gap-4">
-                {goat.images.slice(1).map((url, i) => (
-                  <div key={i} className="aspect-square rounded-2xl overflow-hidden bg-primary/5 border border-primary/5 group">
+                {goatImages.map((url, i) => (
+                  <button 
+                    key={i} 
+                    onClick={() => setCurrentImageIndex(i)}
+                    className={`aspect-square rounded-2xl overflow-hidden bg-primary/5 border-2 transition-all group ${i === currentImageIndex ? 'border-accent' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                  >
                     <img 
                       src={url} 
                       alt="Gallery" 
-                      className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all cursor-pointer"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-all"
                     />
-                  </div>
+                  </button>
                 ))}
               </div>
             )}
