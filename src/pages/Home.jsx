@@ -48,6 +48,23 @@ export function Home() {
         <title>MiniGoat World | Premium Heritage Breed Sanctuary</title>
         <meta name="description" content="Discover the world of heritage miniature goats. We specialize in Nigerian Dwarf, Pygmy, and Fainting goats. Join our mission to preserve rare breeds." />
         <meta name="keywords" content="miniature goats for sale, heritage breed sanctuary, pygmy goats, nigerian dwarf goats, fainting goats, rare goat breeds, sustainable farming" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://minigoatworld.com"
+            }, {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Browse Herd",
+              "item": "https://minigoatworld.com/browse"
+            }]
+          })}
+        </script>
       </Helmet>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">

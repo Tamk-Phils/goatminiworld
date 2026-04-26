@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { ArrowLeft, Tag, Calendar, DollarSign, MessageSquare, ShieldCheck, Heart } from 'lucide-react'
 
+import { Helmet } from 'react-helmet-async'
+
 export function GoatDetails() {
   const { id } = useParams()
   const [goat, setGoat] = useState(null)
@@ -56,8 +58,45 @@ export function GoatDetails() {
     </div>
   )
 
+  const schemaData = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": `${goat.name} - ${goat.breed} Goat`,
+    "image": goatImages,
+    "description": goat.description || `Majestic ${goat.breed} heritage breed goat for sponsorship.`,
+    "brand": {
+      "@type": "Brand",
+      "name": "MiniGoat World"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": goat.price,
+      "priceCurrency": "USD",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": goat.status === 'available' ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "url": `https://minigoatworld.com/goat/${goat.id}`
+    }
+  };
+
   return (
     <div className="min-h-screen pt-32 pb-20 bg-surface">
+      <Helmet>
+        <title>{goat.name} | {goat.breed} Goat | MiniGoat World</title>
+        <meta name="description" content={`Adopt ${goat.name}, a premium ${goat.breed} heritage goat. ${goat.description?.substring(0, 120)}...`} />
+        <link rel="canonical" href={`https://minigoatworld.com/goat/${goat.id}`} />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content={`${goat.name} | ${goat.breed} Heritage Goat`} />
+        <meta property="og:description" content={`Check out ${goat.name}, our beautiful ${goat.breed} available for sponsorship.`} />
+        <meta property="og:image" content={goatImages[0]} />
+        <meta property="og:url" content={`https://minigoatworld.com/goat/${goat.id}`} />
+        
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(schemaData)}
+        </script>
+      </Helmet>
+
       <div className="max-w-7xl mx-auto px-6">
         <Link to="/browse" className="inline-flex items-center gap-2 text-primary/60 hover:text-accent transition-colors mb-8 font-medium">
           <ArrowLeft size={20} /> Back to Catalog
