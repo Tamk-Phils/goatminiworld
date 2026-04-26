@@ -26,7 +26,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-surface selection:bg-accent selection:text-primary">
+      <div className="min-h-screen bg-surface selection:bg-accent selection:text-primary overflow-x-hidden">
         {!isAdminPath && <Navbar />}
         <main>
           <Routes>
