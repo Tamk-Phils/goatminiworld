@@ -48,7 +48,7 @@ export function AdminApplications() {
       
       if (error) throw error
 
-      // TRIGGER EMAIL NOTIFICATION TO USER
+      // TRIGGER EMAIL NOTIFICATION TO USER via EmailJS
       try {
         await sendAdoptionEmail({ 
           type: 'status_update',

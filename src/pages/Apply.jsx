@@ -73,7 +73,7 @@ export function Apply() {
 
       if (error) throw error
 
-      // TRIGGER EMAIL TO ADMIN
+      // TRIGGER EMAIL TO ADMIN via EmailJS
       try {
         await sendAdoptionEmail({ 
           type: 'new_submission',
