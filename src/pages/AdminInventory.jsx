@@ -141,72 +141,50 @@ export function AdminInventory() {
         {loading ? (
           <div className="text-center py-20 text-primary/20">Loading inventory...</div>
         ) : (
-          <div className="bg-white rounded-[2.5rem] border border-primary/5 shadow-xl shadow-primary/5 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead className="bg-primary/5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/40">
-                  <tr>
-                    <th className="px-8 py-6">Image</th>
-                    <th className="px-8 py-6">Name</th>
-                    <th className="px-8 py-6">Breed</th>
-                    <th className="px-8 py-6">Price</th>
-                    <th className="px-8 py-6">Status</th>
-                    <th className="px-8 py-6 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-primary/5">
-                  {goats.map((goat) => (
-                    <tr key={goat.id} className="hover:bg-primary/5 transition-colors">
-                      <td className="px-8 py-6">
-                        <div className="w-14 h-14 rounded-2xl overflow-hidden bg-primary/5">
-                          <img 
-                            src={goat.images?.[0] || goat.legacy_image_url || 'https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&q=80'} 
-                            alt={goat.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </td>
-                      <td className="px-8 py-6 font-bold text-primary">{goat.name}</td>
-                      <td className="px-8 py-6 text-primary/60">{goat.breed}</td>
-                      <td className="px-8 py-6 font-medium">${goat.price.toLocaleString()}</td>
-                      <td className="px-8 py-6">
-                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          goat.status === 'available' ? 'bg-accent/20 text-primary-light' : 'bg-red-500/10 text-red-500'
-                        }`}>
-                          {goat.status}
-                        </span>
-                      </td>
-                      <td className="px-8 py-6 text-right">
-                        <div className="flex justify-end gap-2 relative z-10">
-                          <button 
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              setIsEditing(goat.id)
-                              setFormData(goat)
-                              setShowAddModal(true)
-                            }}
-                            className="p-3 rounded-xl bg-primary/5 text-primary/40 hover:bg-accent hover:text-primary transition-all cursor-pointer"
-                          >
-                            <Edit3 size={18} />
-                          </button>
-                          <button 
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              handleDelete(goat.id)
-                            }}
-                            className="p-3 rounded-xl bg-primary/5 text-primary/40 hover:bg-red-500 hover:text-white transition-all cursor-pointer"
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {goats.map((goat) => (
+              <div key={goat.id} className="bg-white rounded-3xl border border-primary/5 shadow-sm p-6">
+                <div className="aspect-video rounded-2xl overflow-hidden bg-primary/5 mb-4">
+                  <img 
+                    src={goat.images?.[0] || goat.image_url || 'https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&q=80'} 
+                    alt={goat.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 className="font-bold text-lg text-primary">{goat.name}</h3>
+                    <p className="text-primary/40 text-sm">{goat.breed}</p>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                    goat.status === 'available' ? 'bg-accent/20 text-primary-light' : 'bg-red-500/10 text-red-500'
+                  }`}>
+                    {goat.status}
+                  </span>
+                </div>
+                <p className="text-xl font-bold text-primary mb-4">${goat.price?.toLocaleString()}</p>
+                <div className="flex gap-2">
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setIsEditing(goat.id)
+                      setFormData(goat)
+                      setShowAddModal(true)
+                    }}
+                    className="flex-1 py-3 rounded-xl bg-primary/5 text-primary/60 font-bold text-sm hover:bg-accent hover:text-primary transition-all flex items-center justify-center gap-2"
+                  >
+                    <Edit3 size={16} /> Edit
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => handleDelete(goat.id)}
+                    className="flex-1 py-3 rounded-xl bg-red-50 text-red-500 font-bold text-sm hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
+                  >
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
