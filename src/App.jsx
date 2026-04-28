@@ -11,6 +11,7 @@ import { AdminDashboard } from './pages/AdminDashboard'
 import { AdminInventory } from './pages/AdminInventory'
 import { AdminApplications } from './pages/AdminApplications'
 import { AdminChat } from './pages/AdminChat'
+import { AdminMaintenance } from './pages/AdminMaintenance'
 import { AdminUsers } from './pages/AdminUsers'
 import { AdminLayout } from './components/AdminLayout'
 import { About } from './pages/About'
@@ -58,6 +59,7 @@ function App() {
                     <Route path="applications" element={<AdminApplications />} />
                     <Route path="users" element={<AdminUsers />} />
                     <Route path="chat" element={<AdminChat />} />
+                    <Route path="maintenance" element={<AdminMaintenance />} />
                   </Routes>
                 </AdminLayout>
               </ProtectedRoute>

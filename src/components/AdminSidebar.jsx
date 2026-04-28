@@ -11,7 +11,8 @@ import {
   X, 
   Menu,
   Home,
-  Database
+  Database,
+  Wrench
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
@@ -28,6 +29,7 @@ export function AdminSidebar() {
     { to: '/admin/applications', label: 'Applications', icon: FileText },
     { to: '/admin/users', label: 'Manage Users', icon: Users },
     { to: '/admin/chat', label: 'Support Chat', icon: MessageSquare },
+    { to: '/admin/maintenance', label: 'Maintenance', icon: Wrench },
   ]
 
   // Close sidebar on route change (mobile)

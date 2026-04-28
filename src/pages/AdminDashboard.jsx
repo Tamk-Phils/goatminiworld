@@ -157,11 +157,11 @@ export function AdminDashboard() {
                 <AlertCircle size={20} className="text-red-500" /> System Alerts
               </h3>
               <div className="space-y-4">
-                <div className="p-6 bg-red-500/5 rounded-3xl border border-red-500/10">
+                <Link to="/admin/maintenance" className="block p-6 bg-red-500/5 rounded-3xl border border-red-500/10 hover:bg-red-500/10 transition-colors">
                   <p className="text-sm text-red-600 font-medium leading-relaxed">
-                    Storage space is at 85%. Consider clearing old breed logs.
+                    ⚠️ Storage space is at 85%. Click here to run maintenance.
                   </p>
-                </div>
+                </Link>
                 <div className="p-6 bg-accent/5 rounded-3xl border border-accent/10">
                   <p className="text-sm text-primary-light font-medium leading-relaxed">
                     New message from 3 users awaiting response.
