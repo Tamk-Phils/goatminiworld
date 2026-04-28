@@ -105,13 +105,13 @@ export function AdminInventory() {
     if (!confirm('Are you sure? This will permanently remove this goat from the herd.')) return
     try {
       // First, remove any adoption requests referencing this goat
-      await supabase.from('adoption_requests').delete().eq('goat_id', id)
+      const { error: reqError } = await supabase.from('adoption_requests').delete().eq('goat_id', id)
+      if (reqError) console.warn('Could not clear requests:', reqError.message)
       
       const { error } = await supabase.from('goats').delete().eq('id', id)
       if (error) throw error
       
       setGoats(prev => prev.filter(g => g.id !== id))
-      if (selectedApp?.id === id) setSelectedApp(null)
       alert('Goat removed from herd successfully.')
     } catch (err) {
       alert('Delete failed: ' + err.message)
