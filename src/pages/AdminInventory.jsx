@@ -102,13 +102,19 @@ export function AdminInventory() {
   }
 
   const handleDelete = async (id) => {
-    if (!confirm('Are you sure? This action cannot be undone.')) return
+    if (!confirm('Are you sure? This will permanently remove this goat from the herd.')) return
     try {
+      // First, remove any adoption requests referencing this goat
+      await supabase.from('adoption_requests').delete().eq('goat_id', id)
+      
       const { error } = await supabase.from('goats').delete().eq('id', id)
       if (error) throw error
-      fetchGoats()
+      
+      setGoats(prev => prev.filter(g => g.id !== id))
+      if (selectedApp?.id === id) setSelectedApp(null)
+      alert('Goat removed from herd successfully.')
     } catch (err) {
-      alert(err.message)
+      alert('Delete failed: ' + err.message)
     }
   }
 
@@ -207,7 +213,7 @@ export function AdminInventory() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="absolute inset-0 bg-primary/80 backdrop-blur-sm"
-                onClick={() => setShowAddModal(false)}
+                onClick={() => { setShowAddModal(false); setIsEditing(null); setFormData({ name: '', breed: 'Pygmy', price: '', initial_deposit: '', description: '', status: 'available', images: [] }) }}
               />
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -219,7 +225,7 @@ export function AdminInventory() {
                   <h2 className="text-3xl font-bold text-primary tracking-tight">
                     {isEditing ? 'Update Goat' : 'Add New Heritage Goat'}
                   </h2>
-                  <button onClick={() => setShowAddModal(false)} className="p-3 hover:bg-primary/5 rounded-full transition-colors">
+                  <button onClick={() => { setShowAddModal(false); setIsEditing(null); setFormData({ name: '', breed: 'Pygmy', price: '', initial_deposit: '', description: '', status: 'available', images: [] }) }} className="p-3 hover:bg-primary/5 rounded-full transition-colors">
                     <X size={24} className="text-primary/40" />
                   </button>
                 </header>
@@ -257,9 +263,9 @@ export function AdminInventory() {
                           value={formData.status}
                           onChange={(e) => setFormData({...formData, status: e.target.value})}
                         >
-                          <option>available</option>
-                          <option>reserved</option>
-                          <option>sold</option>
+                          <option value="available">Available</option>
+                          <option value="pending">Pending</option>
+                          <option value="adopted">Adopted</option>
                         </select>
                       </div>
                     </div>
