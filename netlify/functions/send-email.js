@@ -57,7 +57,7 @@ export const handler = async (event) => {
             `}
           </div>
           <p style="color: #a0aec0; font-size: 12px; text-align: center; margin-top: 30px;">
-            &copy; 2024 MiniGoat World Heritage Sanctuary
+            &copy; ${new Date().getFullYear()} MiniGoat World Heritage Sanctuary
           </p>
         </div>
       </div>
