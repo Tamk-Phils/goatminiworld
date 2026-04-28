@@ -5,7 +5,8 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const root = document.getElementById('root');
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter>
@@ -13,4 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       </BrowserRouter>
     </HelmetProvider>
   </React.StrictMode>,
-)
+);
+
+// Show content after a tiny delay to ensure CSS is applied
+requestAnimationFrame(() => {
+  root.classList.add('loaded');
+});

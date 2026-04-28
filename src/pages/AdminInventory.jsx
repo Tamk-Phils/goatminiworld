@@ -11,6 +11,7 @@ export function AdminInventory() {
   const [loading, setLoading] = useState(true)
   const [isEditing, setIsEditing] = useState(null)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null) // Stores goat ID to delete
   
   const [formData, setFormData] = useState({
     name: '',
@@ -101,9 +102,12 @@ export function AdminInventory() {
     }
   }
 
-  const handleDelete = async (id) => {
-    if (!confirm('Are you sure? This will permanently remove this goat from the herd.')) return
+  const handleDelete = async () => {
+    const id = showDeleteConfirm;
+    if (!id) return;
+
     try {
+      setLoading(true);
       // First, remove any adoption requests referencing this goat
       const { error: reqError } = await supabase.from('adoption_requests').delete().eq('goat_id', id)
       if (reqError) console.warn('Could not clear requests:', reqError.message)
@@ -112,9 +116,12 @@ export function AdminInventory() {
       if (error) throw error
       
       setGoats(prev => prev.filter(g => g.id !== id))
+      setShowDeleteConfirm(null)
       alert('Goat removed from herd successfully.')
     } catch (err) {
       alert('Delete failed: ' + err.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -166,10 +173,12 @@ export function AdminInventory() {
                 <div className="flex gap-2">
                   <button 
                     type="button"
-                    onClick={() => {
-                      setIsEditing(goat.id)
-                      setFormData(goat)
-                      setShowAddModal(true)
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsEditing(goat.id);
+                      setFormData(goat);
+                      setShowAddModal(true);
                     }}
                     className="flex-1 py-3 rounded-xl bg-primary/5 text-primary/60 font-bold text-sm hover:bg-accent hover:text-primary transition-all flex items-center justify-center gap-2"
                   >
@@ -177,7 +186,11 @@ export function AdminInventory() {
                   </button>
                   <button 
                     type="button"
-                    onClick={() => handleDelete(goat.id)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowDeleteConfirm(goat.id);
+                    }}
                     className="flex-1 py-3 rounded-xl bg-red-50 text-red-500 font-bold text-sm hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
                   >
                     <Trash2 size={16} /> Delete
@@ -187,6 +200,48 @@ export function AdminInventory() {
             ))}
           </div>
         )}
+
+        {/* Delete Confirmation Modal */}
+        <AnimatePresence>
+          {showDeleteConfirm && (
+            <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 bg-primary/90 backdrop-blur-md"
+                onClick={() => setShowDeleteConfirm(null)}
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="bg-white w-full max-w-md rounded-[2.5rem] p-10 relative z-10 shadow-2xl text-center"
+              >
+                <div className="w-20 h-20 bg-red-50 text-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                  <Trash2 size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-primary mb-2">Remove Goat?</h3>
+                <p className="text-primary/60 mb-10">This will permanently remove this goat and all associated requests from the herd database.</p>
+                
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => setShowDeleteConfirm(null)}
+                    className="flex-1 py-4 rounded-2xl bg-primary/5 text-primary/60 font-bold hover:bg-primary/10 transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    onClick={handleDelete}
+                    className="flex-1 py-4 rounded-2xl bg-red-500 text-white font-bold hover:bg-red-600 shadow-lg shadow-red-500/20 transition-all"
+                  >
+                    Yes, Delete
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
 
         {/* Modal */}
         <AnimatePresence>
