@@ -177,20 +177,26 @@ export function AdminInventory() {
                         </span>
                       </td>
                       <td className="px-8 py-6 text-right">
-                        <div className="flex justify-end gap-2">
+                        <div className="flex justify-end gap-2 relative z-10">
                           <button 
-                            onClick={() => {
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
                               setIsEditing(goat.id)
                               setFormData(goat)
                               setShowAddModal(true)
                             }}
-                            className="p-3 rounded-xl bg-primary/5 text-primary/40 hover:bg-accent hover:text-primary transition-all"
+                            className="p-3 rounded-xl bg-primary/5 text-primary/40 hover:bg-accent hover:text-primary transition-all cursor-pointer"
                           >
                             <Edit3 size={18} />
                           </button>
                           <button 
-                            onClick={() => handleDelete(goat.id)}
-                            className="p-3 rounded-xl bg-primary/5 text-primary/40 hover:bg-red-500 hover:text-white transition-all"
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDelete(goat.id)
+                            }}
+                            className="p-3 rounded-xl bg-primary/5 text-primary/40 hover:bg-red-500 hover:text-white transition-all cursor-pointer"
                           >
                             <Trash2 size={18} />
                           </button>
