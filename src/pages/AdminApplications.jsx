@@ -50,14 +50,20 @@ export function AdminApplications() {
 
       // TRIGGER EMAIL via Internal API (Attkisson Approach)
       try {
+        if (!selectedApp.guest_email) {
+          throw new Error('No email address found for this applicant.');
+        }
+
         await emailService.notifyStatusUpdate(
-          selectedApp.guest_name,
+          selectedApp.guest_name || 'Valued Guardian',
           selectedApp.guest_email,
-          selectedApp.goats?.name,
+          selectedApp.goats?.name || 'Heritage Goat',
           status
         );
+        console.log(`Email notification sent to ${selectedApp.guest_email}`);
       } catch (e) {
         console.error('Email failed:', e);
+        alert(`Status updated in database, but the email notification failed: ${e.message}`);
       }
 
       // Create notification for user ONLY IF REGISTERED
