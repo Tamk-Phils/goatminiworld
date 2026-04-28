@@ -79,7 +79,8 @@ export function Apply() {
           formData.name,
           formData.email,
           goat?.name,
-          formData.motivation
+          formData.motivation,
+          formData.message
         );
       } catch (e) {
         console.error('Email failed:', e);

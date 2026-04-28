@@ -42,10 +42,14 @@ export const handler = async (event) => {
           <p style="color: #4a5568; line-height: 1.6;">${mainText}</p>
           <div style="background-color: #f7fafc; padding: 25px; border-radius: 8px; border-left: 4px solid #D4AF37; margin: 20px 0;">
             ${isSubmission ? `
-              <p style="margin: 5px 0;"><strong>Applicant:</strong> ${name}</p>
-              <p style="margin: 5px 0;"><strong>Email:</strong> ${email}</p>
-              <p style="margin: 15px 0 5px 0;"><strong>Motivation:</strong></p>
-              <p style="margin: 0; color: #718096; font-style: italic;">"${details?.motivation || 'N/A'}"</p>
+              <p style="margin: 5px 0; color: #2d3748;"><strong>Applicant:</strong> ${name}</p>
+              <p style="margin: 5px 0; color: #2d3748;"><strong>Email:</strong> ${email}</p>
+              <p style="margin: 15px 0 5px 0; color: #2d3748;"><strong>Motivation:</strong></p>
+              <p style="margin: 0; color: #1a202c; font-style: italic; background: #edf2f7; padding: 10px; border-radius: 4px;">"${details?.motivation || 'N/A'}"</p>
+              ${details?.message ? `
+                <p style="margin: 15px 0 5px 0; color: #2d3748;"><strong>Additional Message:</strong></p>
+                <p style="margin: 0; color: #1a202c; background: #edf2f7; padding: 10px; border-radius: 4px;">${details.message}</p>
+              ` : ''}
             ` : `
               <p style="margin: 0;">${isApproved 
                 ? "Welcome to the family! Please log in to your dashboard for next steps." 

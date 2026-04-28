@@ -25,13 +25,13 @@ export const emailService = {
     }
   },
 
-  async notifyNewSubmission(name, email, goatName, motivation) {
+  async notifyNewSubmission(name, email, goatName, motivation, message) {
     return this.sendEmail({
       type: 'new_submission',
       name,
       email,
       goatName,
-      details: { motivation }
+      details: { motivation, message }
     });
   },
 
