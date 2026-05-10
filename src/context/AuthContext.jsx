@@ -39,15 +39,17 @@ export const AuthProvider = ({ children }) => {
         .single()
 
       if (error && error.code === 'PGRST116') {
-        // Fallback: Create profile if missing
         const { data: { user: authUser } } = await supabase.auth.getUser()
+        // Recognize both potential admin emails (Fixed Typo: minigoatworld)
+        const isAdminEmail = ['support@minigoatworld.com', 'phils7872@gmail.com'].includes(authUser.email?.toLowerCase())
+        
         const { data: newProfile } = await supabase
           .from('users')
           .upsert({
             id: userId,
             email: authUser.email,
             full_name: authUser.user_metadata?.full_name || 'Admin',
-            role: authUser.email === 'support@minigoatword.com' ? 'admin' : 'user'
+            role: isAdminEmail ? 'admin' : 'user'
           })
           .select()
           .single()
@@ -62,7 +64,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const isAdmin = profile?.role === 'admin'
+  const isAdmin = profile?.role === 'admin' || (user?.email && ['support@minigoatworld.com', 'phils7872@gmail.com'].includes(user.email.toLowerCase()))
 
   const value = {
     signUp: (data) => supabase.auth.signUp(data),

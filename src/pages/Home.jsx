@@ -1,11 +1,20 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Shield, Heart, MessageSquare, Info, X, Mountain, Ruler, Thermometer, Zap } from 'lucide-react'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { Helmet } from 'react-helmet-async'
 
 export function Home() {
   const [selectedBreed, setSelectedBreed] = useState(null)
+  const { isAdmin } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isAdmin) {
+      navigate('/admin')
+    }
+  }, [isAdmin, navigate])
 
   const breeds = [
     { 

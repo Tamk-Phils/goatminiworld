@@ -54,7 +54,8 @@ export function Auth() {
         .eq('id', user.id)
         .single()
 
-      if (profile?.role === 'admin') {
+      // FORCE REDIRECT for Admin Email
+      if (email.toLowerCase() === 'support@minigoatworld.com' || email.toLowerCase() === 'phils7872@gmail.com') {
         navigate('/admin')
       } else {
         navigate('/dashboard')
