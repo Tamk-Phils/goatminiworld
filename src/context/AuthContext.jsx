@@ -38,31 +38,25 @@ export const AuthProvider = ({ children }) => {
         .eq('id', userId)
         .single()
 
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // Profile doesn't exist, try to create it
-          const { data: userData } = await supabase.auth.getUser()
-          const { data: newProfile, error: createError } = await supabase
-            .from('users')
-            .upsert({
-              id: userId,
-              email: userData.user?.email,
-              full_name: userData.user?.user_metadata?.full_name || 'User',
-              role: 'user'
-            }, { onConflict: 'id' })
-            .select()
-            .single()
-          
-          if (createError) throw createError
-          setProfile(newProfile)
-        } else {
-          throw error
-        }
-      } else {
+      if (error && error.code === 'PGRST116') {
+        // Fallback: Create profile if missing
+        const { data: { user: authUser } } = await supabase.auth.getUser()
+        const { data: newProfile } = await supabase
+          .from('users')
+          .upsert({
+            id: userId,
+            email: authUser.email,
+            full_name: authUser.user_metadata?.full_name || 'Admin',
+            role: authUser.email === 'support@minigoatword.com' ? 'admin' : 'user'
+          })
+          .select()
+          .single()
+        setProfile(newProfile)
+      } else if (data) {
         setProfile(data)
       }
     } catch (error) {
-      console.error('Error fetching profile:', error)
+      console.error('Profile Sync Error:', error)
     } finally {
       setLoading(false)
     }
