@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS public.goats (
   name TEXT NOT NULL,
   breed TEXT NOT NULL,
   price NUMERIC NOT NULL,
+  initial_deposit NUMERIC DEFAULT 0,
   status TEXT DEFAULT 'available' CHECK (status IN ('available', 'pending', 'adopted')),
   description TEXT,
   image_url TEXT, -- Legacy support

@@ -39,17 +39,25 @@ export function Auth() {
         
         if (error) throw error
         
-        // If Supabase is configured with confirm_email: false, 
-        // it will return a session immediately.
-        // We can check if a session exists to confirm they are logged in.
-        if (data.session) {
-          console.log('Signup successful, session created.')
-        } else {
-          // Fallback if email verification is somehow still on in backend
-          alert('Account created! If you cannot log in, please check your email for a confirmation link.')
+        if (!data.session) {
+          alert('Account created! Please check your email for a confirmation link.')
+          return
         }
       }
-      navigate('/')
+
+      // Check role after sign in/up to determine redirect
+      const { data: { user } } = await supabase.auth.getUser()
+      const { data: profile } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+
+      if (profile?.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/dashboard')
+      }
     } catch (err) {
       console.error('Auth Error:', err)
       setError(err.message || 'An unexpected error occurred')
