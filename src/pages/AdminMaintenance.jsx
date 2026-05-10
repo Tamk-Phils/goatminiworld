@@ -14,7 +14,22 @@ export function AdminMaintenance() {
 
   useEffect(() => {
     fetchStats()
+    autoPurge()
   }, [])
+
+  const autoPurge = async () => {
+    // Silently purge very old records (90+ days) to keep within free tier
+    const ninetyDaysAgo = new Date()
+    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
+    
+    try {
+      await supabase.from('notifications').delete().lt('created_at', ninetyDaysAgo.toISOString())
+      await supabase.from('messages').delete().lt('created_at', ninetyDaysAgo.toISOString())
+      // We don't auto-purge applications as they are more important
+    } catch (e) {
+      console.error('Auto-purge failed', e)
+    }
+  }
 
   const fetchStats = async () => {
     setLoading(true)

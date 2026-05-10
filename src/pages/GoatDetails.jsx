@@ -117,6 +117,7 @@ export function GoatDetails() {
                   exit={{ opacity: 0 }}
                   src={goatImages[currentImageIndex]} 
                   alt={goat.name}
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
               </AnimatePresence>
@@ -158,6 +159,7 @@ export function GoatDetails() {
                     <img 
                       src={url} 
                       alt="Gallery" 
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-110 transition-all"
                     />
                   </button>

@@ -5,14 +5,19 @@ import { Search, Filter, ArrowRight, Tag, Info } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 
+// Global cache to prevent redundant fetching and save egress
+let goatsCache = null;
+
 export function Browse() {
-  const [goats, setGoats] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [goats, setGoats] = useState(goatsCache || [])
+  const [loading, setLoading] = useState(!goatsCache)
   const [search, setSearch] = useState('')
   const [breedFilter, setBreedFilter] = useState('All')
 
   useEffect(() => {
-    fetchGoats()
+    if (!goatsCache) {
+      fetchGoats()
+    }
   }, [])
 
   const fetchGoats = async () => {
@@ -23,6 +28,7 @@ export function Browse() {
         .order('created_at', { ascending: false })
       
       if (error) throw error
+      goatsCache = data;
       setGoats(data)
     } catch (err) {
       console.error('Error fetching goats:', err)
@@ -110,6 +116,7 @@ export function Browse() {
                   <img 
                     src={goat.images?.[0] || goat.legacy_image_url || getBreedImage(goat.breed)} 
                     alt={goat.name}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute top-4 left-4 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-2">
