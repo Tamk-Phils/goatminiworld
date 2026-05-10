@@ -7,18 +7,20 @@ export const emailService = {
     try {
       const response = await fetch('/.netlify/functions/send-email', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to send email');
+      // Handle case where Netlify function is not running (e.g. standard npm run dev)
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        console.warn('Email function not responding with JSON. This is normal if you are not running "netlify dev".');
+        return { message: 'Skipped email (Offline)' };
       }
 
-      return await response.json();
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Email error');
+      return result;
     } catch (error) {
       console.error('Email service error:', error);
       throw error;
